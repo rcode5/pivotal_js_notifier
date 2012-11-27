@@ -1,0 +1,13 @@
+{
+  "name": "Pivotal Notifier",
+  "manifest_version": 2,
+  "version": "2.0",
+  "description": "Remind me what Pivotal Tracker story I'm working on.",
+  "browser_action": { "default_icon": "pivotal_icon.ico" },
+  "content_scripts": [
+    {
+      "matches": ["http://*.pivotaltracker.com/projects/*"],
+      "js": ["pjsn.js"]
+    }
+  ]
+}
