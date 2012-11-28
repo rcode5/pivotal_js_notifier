@@ -1,5 +1,28 @@
 try {
-  var j = jQuery;
+  var arrayIncludes = function(arr, v) {
+    var i = 0;
+    var n = arr.length;
+    for(;i<n;++i){
+      var val = arr[i];
+      if (val == v) {
+        return true;
+      }
+    }
+    return false;
+  };
+  var closestByClass = function(el, clz) {
+    while(el && el != document) {
+      var p = el.parentNode;
+      var classes = (p.className || '').split(/\s+/);
+      if (arrayIncludes(classes,clz)) {
+        return p;
+      }
+      else {
+        el = p;
+      }
+    }
+    return null;
+  };
   var pjsn = {
     saveNote:function(content) {
       chrome.storage.local.set({currentStory: content});
@@ -14,10 +37,26 @@ try {
     init: function() {/* backlog start buttons */
       var _that = this;
       var getStoryName = function(startB) {
-        var desc = j(startB).closest('.storyItem').find('.story_name')[0];
-        return (desc.textContent||desc.innerText).replace(/(.*)\s+\(.*/, "$1");
+        var item = closestByClass(startB, 'storyItem');
+        if(item) {
+          var story_name_elements = item.getElementsByClassName('story_name');
+          var span = '';
+          var i = 0;
+          var n = story_name_elements.length;
+          for(;i<n;++i) {
+            var sp = story_name_elements[i];
+            if (sp.tagName == 'SPAN') {
+              span = sp;
+              break;
+            }
+          }
+          if (span) {
+            return (span.textContent||span.innerText).replace(/(.*)\s+\(.*/, "$1");
+          }
+        }
+        return 'N/A';
       };
-      j('body').on('mousedown', '#layout a.start', function() {
+      jQuery('body').on('mousedown', '#layout a.start', function() {
         var story = getStoryName(this);
         _that.saveNote(story);
       });
@@ -30,4 +69,5 @@ try {
   console.log('loaded pivotal notifier');
 } catch(ex) {
   console.log('Failed to load the pivotal notifier extension');
+  console.log("Exception", ex.message);
 }
