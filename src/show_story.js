@@ -6,6 +6,10 @@ var setStory = function() {
   });
 };
 
+window.addEventListener("storage", function() { 
+  console.log("storage update"); setStory(); 
+}, false);
+
 window.onload = function() {
   if(typeof f == 'function') {
     f();

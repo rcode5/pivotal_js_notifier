@@ -3,14 +3,20 @@
   "manifest_version": 2,
   "version": "2.0",
   "description": "Remind me what Pivotal Tracker story I'm working on.",
-  "browser_action": { "default_icon": "pivotal_icon.ico"},
+  "browser_action": { 
+    "default_icon": "pivotal_icon.ico",
+    "default_title": "what was i working on?"
+  },
+  "background": {
+    "scripts": [ "pjsn_base.js", "background.js" ]
+  },
   "permissions": [
     "storage"
   ],
   "content_scripts": [
     {
       "matches": [ "*://*.pivotaltracker.com/*" ],
-      "js": ["jquery1.8.3.js","pjsn.js"],
+      "js": ["jquery1.8.3.js","pjsn_base.js","pjsn.js"],
       "run_at": "document_end"
     }
   ]

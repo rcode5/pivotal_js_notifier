@@ -1,3 +1,4 @@
+var pjsn = window.pjsn = window.pjsn || {};
 try {
   var arrayIncludes = function(arr, v) {
     var i = 0;
@@ -23,16 +24,9 @@ try {
     }
     return null;
   };
-  var pjsn = {
+  var methods = {
     saveNote:function(content) {
       chrome.storage.local.set({currentStory: content});
-      var c = window.open(chrome.extension.getURL('popup.html'),'mytracker',
-                  'width=800,height=800'
-                  +',menubar=0'
-                  +',toolbar=1'
-                  +',status=0'
-                  +',scrollbars=1'
-                  +',resizable=1');
     },
     init: function() {/* backlog start buttons */
       var _that = this;
@@ -62,9 +56,9 @@ try {
       });
       this.init = function() {};
     }
-    
   };
 
+  mergeObject(pjsn, methods);
   jQuery(document).ready(pjsn.init());
   console.log('loaded pivotal notifier');
 } catch(ex) {
